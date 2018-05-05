@@ -66,6 +66,7 @@ public interface PremiumAccount extends Account
 
     final static String[] _iceOps =
     {
+        "getAccountId",
         "getForeignCurrencyCreditInfo",
         "getLocalCurrencyCreditInfo",
         "getMoneyAmount",
@@ -89,29 +90,33 @@ public interface PremiumAccount extends Account
         {
             case 0:
             {
-                return _iceD_getForeignCurrencyCreditInfo(this, in, current);
+                return Account._iceD_getAccountId(this, in, current);
             }
             case 1:
             {
-                return Account._iceD_getLocalCurrencyCreditInfo(this, in, current);
+                return _iceD_getForeignCurrencyCreditInfo(this, in, current);
             }
             case 2:
             {
-                return Account._iceD_getMoneyAmount(this, in, current);
+                return Account._iceD_getLocalCurrencyCreditInfo(this, in, current);
             }
             case 3:
             {
-                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
+                return Account._iceD_getMoneyAmount(this, in, current);
             }
             case 4:
             {
-                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
             }
             case 5:
             {
-                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
             }
             case 6:
+            {
+                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
+            }
+            case 7:
             {
                 return com.zeroc.Ice.Object._iceD_ice_ping(this, in, current);
             }

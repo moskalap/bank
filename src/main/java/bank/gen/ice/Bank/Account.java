@@ -22,6 +22,8 @@ package bank.gen.ice.Bank;
 
 public interface Account extends com.zeroc.Ice.Object
 {
+    long getAccountId(com.zeroc.Ice.Current current);
+
     Money getMoneyAmount(com.zeroc.Ice.Current current);
 
     CreditInfo getLocalCurrencyCreditInfo(long amount, Date endOfContract, com.zeroc.Ice.Current current);
@@ -47,6 +49,17 @@ public interface Account extends com.zeroc.Ice.Object
     static String ice_staticId()
     {
         return "::Bank::Account";
+    }
+
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_getAccountId(Account obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        inS.readEmptyParams();
+        long ret = obj.getAccountId(current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeLong(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
     }
 
     static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_getMoneyAmount(Account obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
@@ -78,6 +91,7 @@ public interface Account extends com.zeroc.Ice.Object
 
     final static String[] _iceOps =
     {
+        "getAccountId",
         "getLocalCurrencyCreditInfo",
         "getMoneyAmount",
         "ice_id",
@@ -100,25 +114,29 @@ public interface Account extends com.zeroc.Ice.Object
         {
             case 0:
             {
-                return _iceD_getLocalCurrencyCreditInfo(this, in, current);
+                return _iceD_getAccountId(this, in, current);
             }
             case 1:
             {
-                return _iceD_getMoneyAmount(this, in, current);
+                return _iceD_getLocalCurrencyCreditInfo(this, in, current);
             }
             case 2:
             {
-                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
+                return _iceD_getMoneyAmount(this, in, current);
             }
             case 3:
             {
-                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
             }
             case 4:
             {
-                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
             }
             case 5:
+            {
+                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
+            }
+            case 6:
             {
                 return com.zeroc.Ice.Object._iceD_ice_ping(this, in, current);
             }

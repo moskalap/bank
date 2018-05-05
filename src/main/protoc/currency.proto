@@ -25,5 +25,5 @@ message ExchangeRate{
 }
 
 service ExchangeService{
-    rpc exchange(Currencies) returns (stream  ExchangeRate) {}
+    rpc exchange(Currencies) returns (stream ExchangeRate){}
 }

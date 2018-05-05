@@ -28,6 +28,7 @@ module Bank
         Money foreignCurrency;
     }
     interface Account{
+        long getAccountId();
         Money getMoneyAmount();
         CreditInfo getLocalCurrencyCreditInfo(long amount, Date endOfContract);
 

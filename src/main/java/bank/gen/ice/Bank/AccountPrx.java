@@ -22,6 +22,37 @@ package bank.gen.ice.Bank;
 
 public interface AccountPrx extends com.zeroc.Ice.ObjectPrx
 {
+    default long getAccountId()
+    {
+        return getAccountId(com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default long getAccountId(java.util.Map<String, String> context)
+    {
+        return _iceI_getAccountIdAsync(context, true).waitForResponse();
+    }
+
+    default java.util.concurrent.CompletableFuture<java.lang.Long> getAccountIdAsync()
+    {
+        return _iceI_getAccountIdAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<java.lang.Long> getAccountIdAsync(java.util.Map<String, String> context)
+    {
+        return _iceI_getAccountIdAsync(context, false);
+    }
+
+    default com.zeroc.IceInternal.OutgoingAsync<java.lang.Long> _iceI_getAccountIdAsync(java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<java.lang.Long> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getAccountId", null, sync, null);
+        f.invoke(true, context, null, null, istr -> {
+                     long ret;
+                     ret = istr.readLong();
+                     return ret;
+                 });
+        return f;
+    }
+
     default Money getMoneyAmount()
     {
         return getMoneyAmount(com.zeroc.Ice.ObjectPrx.noExplicitContext);
