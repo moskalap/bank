@@ -1,0 +1,20 @@
+group 'pl.edu.agh'
+version '1.0-SNAPSHOT'
+apply plugin: 'application'
+
+mainClassName = 'bank.Main'
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'io.grpc', name: 'grpc-all', version: '1.11.0'
+    compile group: 'com.zeroc', name: 'ice', version: '3.7.1'
+
+
+}
