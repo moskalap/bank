@@ -23,13 +23,26 @@ package bank.gen.ice.Bank;
 public interface PremiumAccountPrx extends AccountPrx
 {
     default CreditInfo getForeignCurrencyCreditInfo(Money amount, Date endOfContract)
+        throws CreditInfoException
     {
         return getForeignCurrencyCreditInfo(amount, endOfContract, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
     default CreditInfo getForeignCurrencyCreditInfo(Money amount, Date endOfContract, java.util.Map<String, String> context)
+        throws CreditInfoException
     {
-        return _iceI_getForeignCurrencyCreditInfoAsync(amount, endOfContract, context, true).waitForResponse();
+        try
+        {
+            return _iceI_getForeignCurrencyCreditInfoAsync(amount, endOfContract, context, true).waitForResponseOrUserEx();
+        }
+        catch(CreditInfoException ex)
+        {
+            throw ex;
+        }
+        catch(com.zeroc.Ice.UserException ex)
+        {
+            throw new com.zeroc.Ice.UnknownUserException(ex.ice_id(), ex);
+        }
     }
 
     default java.util.concurrent.CompletableFuture<CreditInfo> getForeignCurrencyCreditInfoAsync(Money amount, Date endOfContract)
@@ -44,7 +57,7 @@ public interface PremiumAccountPrx extends AccountPrx
 
     default com.zeroc.IceInternal.OutgoingAsync<CreditInfo> _iceI_getForeignCurrencyCreditInfoAsync(Money iceP_amount, Date iceP_endOfContract, java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<CreditInfo> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getForeignCurrencyCreditInfo", null, sync, null);
+        com.zeroc.IceInternal.OutgoingAsync<CreditInfo> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getForeignCurrencyCreditInfo", null, sync, _iceE_getForeignCurrencyCreditInfo);
         f.invoke(true, context, null, ostr -> {
                      Money.ice_write(ostr, iceP_amount);
                      Date.ice_write(ostr, iceP_endOfContract);
@@ -55,6 +68,11 @@ public interface PremiumAccountPrx extends AccountPrx
                  });
         return f;
     }
+
+    static final Class<?>[] _iceE_getForeignCurrencyCreditInfo =
+    {
+        CreditInfoException.class
+    };
 
     /**
      * Contacts the remote server to verify that the object implements this type.

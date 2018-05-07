@@ -5,7 +5,9 @@ module Bank
 {
 
     enum Currency {PLN, USD, EUR, GBP, CHF};
-    enum AccountCategory {STANDARD, PREMIUM}
+    enum AccountStructureError {AMOUNTNEGATIVE, PESELNOTNUMERIC, PESELLENGTH};
+    enum CreditInfoError { AMOUNTNEGATIVE, DATEPAST};
+    enum AccountCategory {STANDARD, PREMIUM};
 
     struct Money {
         float value;
@@ -28,20 +30,31 @@ module Bank
         Money localCurrency;
         Money foreignCurrency;
     }
+    exception BankException{
+        string msg;
+    }
+
+    exception AccountCreationException extends BankException {
+        AccountStructureError errorType;
+    }
+
+    exception CreditInfoException extends BankException{
+        CreditInfoError error;
+    }
 
     interface Account{
         string getAccountId();
         Money getMoneyAmount();
-        CreditInfo getLocalCurrencyCreditInfo(float amount, Date endOfContract);
+        CreditInfo getLocalCurrencyCreditInfo(float amount, Date endOfContract) throws CreditInfoException;
     }
 
     interface PremiumAccount extends Account{
-         CreditInfo getForeignCurrencyCreditInfo(Money amount, Date endOfContract);
+         CreditInfo getForeignCurrencyCreditInfo(Money amount, Date endOfContract) throws CreditInfoException;
     }
 
     interface BankService{
-        Account* createAccount(Person person, Money declaredIncome, Money amount);
-        Account* getAccount(string accountId);
+        Account* createAccount(Person person, Money declaredIncome, Money amount) throws AccountCreationException;
+        Account* getAccount(string pesel, AccountCategory category);
     }
 
 };

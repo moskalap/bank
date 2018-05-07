@@ -28,6 +28,43 @@ public final class ExchangeServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  @java.lang.Deprecated // Use {@link #getGetAllMethod()} instead. 
+  public static final io.grpc.MethodDescriptor<bank.gen.grpc.Currencies,
+      bank.gen.grpc.ExchangeContainer> METHOD_GET_ALL = getGetAllMethodHelper();
+
+  private static volatile io.grpc.MethodDescriptor<bank.gen.grpc.Currencies,
+      bank.gen.grpc.ExchangeContainer> getGetAllMethod;
+
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static io.grpc.MethodDescriptor<bank.gen.grpc.Currencies,
+      bank.gen.grpc.ExchangeContainer> getGetAllMethod() {
+    return getGetAllMethodHelper();
+  }
+
+  private static io.grpc.MethodDescriptor<bank.gen.grpc.Currencies,
+      bank.gen.grpc.ExchangeContainer> getGetAllMethodHelper() {
+    io.grpc.MethodDescriptor<bank.gen.grpc.Currencies, bank.gen.grpc.ExchangeContainer> getGetAllMethod;
+    if ((getGetAllMethod = ExchangeServiceGrpc.getGetAllMethod) == null) {
+      synchronized (ExchangeServiceGrpc.class) {
+        if ((getGetAllMethod = ExchangeServiceGrpc.getGetAllMethod) == null) {
+          ExchangeServiceGrpc.getGetAllMethod = getGetAllMethod = 
+              io.grpc.MethodDescriptor.<bank.gen.grpc.Currencies, bank.gen.grpc.ExchangeContainer>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "currency.ExchangeService", "getAll"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  bank.gen.grpc.Currencies.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  bank.gen.grpc.ExchangeContainer.getDefaultInstance()))
+                  .setSchemaDescriptor(new ExchangeServiceMethodDescriptorSupplier("getAll"))
+                  .build();
+          }
+        }
+     }
+     return getGetAllMethod;
+  }
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
   @java.lang.Deprecated // Use {@link #getExchangeMethod()} instead. 
   public static final io.grpc.MethodDescriptor<bank.gen.grpc.Currencies,
       bank.gen.grpc.ExchangeRate> METHOD_EXCHANGE = getExchangeMethodHelper();
@@ -94,6 +131,13 @@ public final class ExchangeServiceGrpc {
 
     /**
      */
+    public void getAll(bank.gen.grpc.Currencies request,
+        io.grpc.stub.StreamObserver<bank.gen.grpc.ExchangeContainer> responseObserver) {
+      asyncUnimplementedUnaryCall(getGetAllMethodHelper(), responseObserver);
+    }
+
+    /**
+     */
     public void exchange(bank.gen.grpc.Currencies request,
         io.grpc.stub.StreamObserver<bank.gen.grpc.ExchangeRate> responseObserver) {
       asyncUnimplementedUnaryCall(getExchangeMethodHelper(), responseObserver);
@@ -101,6 +145,13 @@ public final class ExchangeServiceGrpc {
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+          .addMethod(
+            getGetAllMethodHelper(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                bank.gen.grpc.Currencies,
+                bank.gen.grpc.ExchangeContainer>(
+                  this, METHODID_GET_ALL)))
           .addMethod(
             getExchangeMethodHelper(),
             asyncServerStreamingCall(
@@ -132,6 +183,14 @@ public final class ExchangeServiceGrpc {
 
     /**
      */
+    public void getAll(bank.gen.grpc.Currencies request,
+        io.grpc.stub.StreamObserver<bank.gen.grpc.ExchangeContainer> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getGetAllMethodHelper(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
     public void exchange(bank.gen.grpc.Currencies request,
         io.grpc.stub.StreamObserver<bank.gen.grpc.ExchangeRate> responseObserver) {
       asyncServerStreamingCall(
@@ -155,6 +214,13 @@ public final class ExchangeServiceGrpc {
     protected ExchangeServiceBlockingStub build(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
       return new ExchangeServiceBlockingStub(channel, callOptions);
+    }
+
+    /**
+     */
+    public bank.gen.grpc.ExchangeContainer getAll(bank.gen.grpc.Currencies request) {
+      return blockingUnaryCall(
+          getChannel(), getGetAllMethodHelper(), getCallOptions(), request);
     }
 
     /**
@@ -183,9 +249,18 @@ public final class ExchangeServiceGrpc {
         io.grpc.CallOptions callOptions) {
       return new ExchangeServiceFutureStub(channel, callOptions);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<bank.gen.grpc.ExchangeContainer> getAll(
+        bank.gen.grpc.Currencies request) {
+      return futureUnaryCall(
+          getChannel().newCall(getGetAllMethodHelper(), getCallOptions()), request);
+    }
   }
 
-  private static final int METHODID_EXCHANGE = 0;
+  private static final int METHODID_GET_ALL = 0;
+  private static final int METHODID_EXCHANGE = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -204,6 +279,10 @@ public final class ExchangeServiceGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
+        case METHODID_GET_ALL:
+          serviceImpl.getAll((bank.gen.grpc.Currencies) request,
+              (io.grpc.stub.StreamObserver<bank.gen.grpc.ExchangeContainer>) responseObserver);
+          break;
         case METHODID_EXCHANGE:
           serviceImpl.exchange((bank.gen.grpc.Currencies) request,
               (io.grpc.stub.StreamObserver<bank.gen.grpc.ExchangeRate>) responseObserver);
@@ -269,6 +348,7 @@ public final class ExchangeServiceGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new ExchangeServiceFileDescriptorSupplier())
+              .addMethod(getGetAllMethodHelper())
               .addMethod(getExchangeMethodHelper())
               .build();
         }

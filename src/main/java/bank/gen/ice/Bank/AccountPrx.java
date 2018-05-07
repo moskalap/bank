@@ -22,32 +22,32 @@ package bank.gen.ice.Bank;
 
 public interface AccountPrx extends com.zeroc.Ice.ObjectPrx
 {
-    default long getAccountId()
+    default String getAccountId()
     {
         return getAccountId(com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default long getAccountId(java.util.Map<String, String> context)
+    default String getAccountId(java.util.Map<String, String> context)
     {
         return _iceI_getAccountIdAsync(context, true).waitForResponse();
     }
 
-    default java.util.concurrent.CompletableFuture<java.lang.Long> getAccountIdAsync()
+    default java.util.concurrent.CompletableFuture<java.lang.String> getAccountIdAsync()
     {
         return _iceI_getAccountIdAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<java.lang.Long> getAccountIdAsync(java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<java.lang.String> getAccountIdAsync(java.util.Map<String, String> context)
     {
         return _iceI_getAccountIdAsync(context, false);
     }
 
-    default com.zeroc.IceInternal.OutgoingAsync<java.lang.Long> _iceI_getAccountIdAsync(java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<java.lang.String> _iceI_getAccountIdAsync(java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<java.lang.Long> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getAccountId", null, sync, null);
+        com.zeroc.IceInternal.OutgoingAsync<java.lang.String> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getAccountId", null, sync, null);
         f.invoke(true, context, null, null, istr -> {
-                     long ret;
-                     ret = istr.readLong();
+                     String ret;
+                     ret = istr.readString();
                      return ret;
                  });
         return f;
@@ -84,31 +84,44 @@ public interface AccountPrx extends com.zeroc.Ice.ObjectPrx
         return f;
     }
 
-    default CreditInfo getLocalCurrencyCreditInfo(long amount, Date endOfContract)
+    default CreditInfo getLocalCurrencyCreditInfo(float amount, Date endOfContract)
+        throws CreditInfoException
     {
         return getLocalCurrencyCreditInfo(amount, endOfContract, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default CreditInfo getLocalCurrencyCreditInfo(long amount, Date endOfContract, java.util.Map<String, String> context)
+    default CreditInfo getLocalCurrencyCreditInfo(float amount, Date endOfContract, java.util.Map<String, String> context)
+        throws CreditInfoException
     {
-        return _iceI_getLocalCurrencyCreditInfoAsync(amount, endOfContract, context, true).waitForResponse();
+        try
+        {
+            return _iceI_getLocalCurrencyCreditInfoAsync(amount, endOfContract, context, true).waitForResponseOrUserEx();
+        }
+        catch(CreditInfoException ex)
+        {
+            throw ex;
+        }
+        catch(com.zeroc.Ice.UserException ex)
+        {
+            throw new com.zeroc.Ice.UnknownUserException(ex.ice_id(), ex);
+        }
     }
 
-    default java.util.concurrent.CompletableFuture<CreditInfo> getLocalCurrencyCreditInfoAsync(long amount, Date endOfContract)
+    default java.util.concurrent.CompletableFuture<CreditInfo> getLocalCurrencyCreditInfoAsync(float amount, Date endOfContract)
     {
         return _iceI_getLocalCurrencyCreditInfoAsync(amount, endOfContract, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<CreditInfo> getLocalCurrencyCreditInfoAsync(long amount, Date endOfContract, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<CreditInfo> getLocalCurrencyCreditInfoAsync(float amount, Date endOfContract, java.util.Map<String, String> context)
     {
         return _iceI_getLocalCurrencyCreditInfoAsync(amount, endOfContract, context, false);
     }
 
-    default com.zeroc.IceInternal.OutgoingAsync<CreditInfo> _iceI_getLocalCurrencyCreditInfoAsync(long iceP_amount, Date iceP_endOfContract, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<CreditInfo> _iceI_getLocalCurrencyCreditInfoAsync(float iceP_amount, Date iceP_endOfContract, java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<CreditInfo> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getLocalCurrencyCreditInfo", null, sync, null);
+        com.zeroc.IceInternal.OutgoingAsync<CreditInfo> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getLocalCurrencyCreditInfo", null, sync, _iceE_getLocalCurrencyCreditInfo);
         f.invoke(true, context, null, ostr -> {
-                     ostr.writeLong(iceP_amount);
+                     ostr.writeFloat(iceP_amount);
                      Date.ice_write(ostr, iceP_endOfContract);
                  }, istr -> {
                      CreditInfo ret;
@@ -117,6 +130,11 @@ public interface AccountPrx extends com.zeroc.Ice.ObjectPrx
                  });
         return f;
     }
+
+    static final Class<?>[] _iceE_getLocalCurrencyCreditInfo =
+    {
+        CreditInfoException.class
+    };
 
     /**
      * Contacts the remote server to verify that the object implements this type.

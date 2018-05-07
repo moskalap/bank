@@ -22,11 +22,12 @@ package bank.gen.ice.Bank;
 
 public interface Account extends com.zeroc.Ice.Object
 {
-    long getAccountId(com.zeroc.Ice.Current current);
+    String getAccountId(com.zeroc.Ice.Current current);
 
     Money getMoneyAmount(com.zeroc.Ice.Current current);
 
-    CreditInfo getLocalCurrencyCreditInfo(long amount, Date endOfContract, com.zeroc.Ice.Current current);
+    CreditInfo getLocalCurrencyCreditInfo(float amount, Date endOfContract, com.zeroc.Ice.Current current)
+        throws CreditInfoException;
 
     static final String[] _iceIds =
     {
@@ -55,9 +56,9 @@ public interface Account extends com.zeroc.Ice.Object
     {
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
         inS.readEmptyParams();
-        long ret = obj.getAccountId(current);
+        String ret = obj.getAccountId(current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
-        ostr.writeLong(ret);
+        ostr.writeString(ret);
         inS.endWriteParams(ostr);
         return inS.setResult(ostr);
     }
@@ -74,12 +75,13 @@ public interface Account extends com.zeroc.Ice.Object
     }
 
     static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_getLocalCurrencyCreditInfo(Account obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+        throws com.zeroc.Ice.UserException
     {
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
         com.zeroc.Ice.InputStream istr = inS.startReadParams();
-        long iceP_amount;
+        float iceP_amount;
         Date iceP_endOfContract;
-        iceP_amount = istr.readLong();
+        iceP_amount = istr.readFloat();
         iceP_endOfContract = Date.ice_read(istr);
         inS.endReadParams();
         CreditInfo ret = obj.getLocalCurrencyCreditInfo(iceP_amount, iceP_endOfContract, current);

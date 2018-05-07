@@ -22,9 +22,10 @@ package bank.gen.ice.Bank;
 
 public interface BankService extends com.zeroc.Ice.Object
 {
-    AccountPrx createAccount(Person person, Money declaredIncome, com.zeroc.Ice.Current current);
+    AccountPrx createAccount(Person person, Money declaredIncome, Money amount, com.zeroc.Ice.Current current)
+        throws AccountCreationException;
 
-    AccountPrx getAccount(long accountId, com.zeroc.Ice.Current current);
+    AccountPrx getAccount(String pesel, AccountCategory category, com.zeroc.Ice.Current current);
 
     static final String[] _iceIds =
     {
@@ -50,15 +51,18 @@ public interface BankService extends com.zeroc.Ice.Object
     }
 
     static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_createAccount(BankService obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+        throws com.zeroc.Ice.UserException
     {
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
         com.zeroc.Ice.InputStream istr = inS.startReadParams();
         Person iceP_person;
         Money iceP_declaredIncome;
+        Money iceP_amount;
         iceP_person = Person.ice_read(istr);
         iceP_declaredIncome = Money.ice_read(istr);
+        iceP_amount = Money.ice_read(istr);
         inS.endReadParams();
-        AccountPrx ret = obj.createAccount(iceP_person, iceP_declaredIncome, current);
+        AccountPrx ret = obj.createAccount(iceP_person, iceP_declaredIncome, iceP_amount, current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
         ostr.writeProxy(ret);
         inS.endWriteParams(ostr);
@@ -69,10 +73,12 @@ public interface BankService extends com.zeroc.Ice.Object
     {
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
         com.zeroc.Ice.InputStream istr = inS.startReadParams();
-        long iceP_accountId;
-        iceP_accountId = istr.readLong();
+        String iceP_pesel;
+        AccountCategory iceP_category;
+        iceP_pesel = istr.readString();
+        iceP_category = AccountCategory.ice_read(istr);
         inS.endReadParams();
-        AccountPrx ret = obj.getAccount(iceP_accountId, current);
+        AccountPrx ret = obj.getAccount(iceP_pesel, iceP_category, current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
         ostr.writeProxy(ret);
         inS.endWriteParams(ostr);

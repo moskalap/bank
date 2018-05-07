@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public class Server {
+    static {
+        System.setProperty("java.util.logging.SimpleFormatter.format",
+                "[%1$tF %1$tT] [%4$-7s] %5$s %n");
+    }
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
     private int port = 50051;

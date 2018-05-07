@@ -22,7 +22,8 @@ package bank.gen.ice.Bank;
 
 public interface PremiumAccount extends Account
 {
-    CreditInfo getForeignCurrencyCreditInfo(Money amount, Date endOfContract, com.zeroc.Ice.Current current);
+    CreditInfo getForeignCurrencyCreditInfo(Money amount, Date endOfContract, com.zeroc.Ice.Current current)
+        throws CreditInfoException;
 
     static final String[] _iceIds =
     {
@@ -49,6 +50,7 @@ public interface PremiumAccount extends Account
     }
 
     static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_getForeignCurrencyCreditInfo(PremiumAccount obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+        throws com.zeroc.Ice.UserException
     {
         com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
         com.zeroc.Ice.InputStream istr = inS.startReadParams();

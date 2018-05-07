@@ -17,7 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private ExchangeRate() {
     currency_ = 0;
-    ratio_ = 0F;
+    ratio_ = 0D;
   }
 
   @java.lang.Override
@@ -50,9 +50,9 @@ private static final long serialVersionUID = 0L;
             currency_ = rawValue;
             break;
           }
-          case 21: {
+          case 17: {
 
-            ratio_ = input.readFloat();
+            ratio_ = input.readDouble();
             break;
           }
           default: {
@@ -105,11 +105,11 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RATIO_FIELD_NUMBER = 2;
-  private float ratio_;
+  private double ratio_;
   /**
-   * <code>float ratio = 2;</code>
+   * <code>double ratio = 2;</code>
    */
-  public float getRatio() {
+  public double getRatio() {
     return ratio_;
   }
 
@@ -130,8 +130,8 @@ private static final long serialVersionUID = 0L;
     if (currency_ != bank.gen.grpc.Currency.PLN.getNumber()) {
       output.writeEnum(1, currency_);
     }
-    if (ratio_ != 0F) {
-      output.writeFloat(2, ratio_);
+    if (ratio_ != 0D) {
+      output.writeDouble(2, ratio_);
     }
     unknownFields.writeTo(output);
   }
@@ -146,9 +146,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(1, currency_);
     }
-    if (ratio_ != 0F) {
+    if (ratio_ != 0D) {
       size += com.google.protobuf.CodedOutputStream
-        .computeFloatSize(2, ratio_);
+        .computeDoubleSize(2, ratio_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -168,8 +168,8 @@ private static final long serialVersionUID = 0L;
     boolean result = true;
     result = result && currency_ == other.currency_;
     result = result && (
-        java.lang.Float.floatToIntBits(getRatio())
-        == java.lang.Float.floatToIntBits(
+        java.lang.Double.doubleToLongBits(getRatio())
+        == java.lang.Double.doubleToLongBits(
             other.getRatio()));
     result = result && unknownFields.equals(other.unknownFields);
     return result;
@@ -185,8 +185,8 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + CURRENCY_FIELD_NUMBER;
     hash = (53 * hash) + currency_;
     hash = (37 * hash) + RATIO_FIELD_NUMBER;
-    hash = (53 * hash) + java.lang.Float.floatToIntBits(
-        getRatio());
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+        java.lang.Double.doubleToLongBits(getRatio()));
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -322,7 +322,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       currency_ = 0;
 
-      ratio_ = 0F;
+      ratio_ = 0D;
 
       return this;
     }
@@ -403,7 +403,7 @@ private static final long serialVersionUID = 0L;
       if (other.currency_ != 0) {
         setCurrencyValue(other.getCurrencyValue());
       }
-      if (other.getRatio() != 0F) {
+      if (other.getRatio() != 0D) {
         setRatio(other.getRatio());
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -480,28 +480,28 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private float ratio_ ;
+    private double ratio_ ;
     /**
-     * <code>float ratio = 2;</code>
+     * <code>double ratio = 2;</code>
      */
-    public float getRatio() {
+    public double getRatio() {
       return ratio_;
     }
     /**
-     * <code>float ratio = 2;</code>
+     * <code>double ratio = 2;</code>
      */
-    public Builder setRatio(float value) {
+    public Builder setRatio(double value) {
       
       ratio_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>float ratio = 2;</code>
+     * <code>double ratio = 2;</code>
      */
     public Builder clearRatio() {
       
-      ratio_ = 0F;
+      ratio_ = 0D;
       onChanged();
       return this;
     }

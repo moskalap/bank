@@ -24,6 +24,11 @@ public final class CurrencyProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_currency_ExchangeRate_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_currency_ExchangeContainer_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_currency_ExchangeContainer_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -36,12 +41,15 @@ public final class CurrencyProto {
       "\n\016currency.proto\022\010currency\"4\n\nCurrencies" +
       "\022&\n\ncurrencies\030\001 \003(\0162\022.currency.Currency" +
       "\"C\n\014ExchangeRate\022$\n\010currency\030\001 \001(\0162\022.cur" +
-      "rency.Currency\022\r\n\005ratio\030\002 \001(\002*7\n\010Currenc" +
-      "y\022\007\n\003PLN\020\000\022\007\n\003USD\020\001\022\007\n\003EUR\020\002\022\007\n\003GBP\020\003\022\007\n" +
-      "\003CHF\020\0042O\n\017ExchangeService\022<\n\010exchange\022\024." +
-      "currency.Currencies\032\026.currency.ExchangeR" +
-      "ate\"\0000\001B&\n\rbank.gen.grpcB\rCurrencyProtoP" +
-      "\001\242\002\003HLWb\006proto3"
+      "rency.Currency\022\r\n\005ratio\030\002 \001(\001\":\n\021Exchang" +
+      "eContainer\022%\n\005rates\030\001 \003(\0132\026.currency.Exc" +
+      "hangeRate*7\n\010Currency\022\007\n\003PLN\020\000\022\007\n\003USD\020\001\022" +
+      "\007\n\003EUR\020\002\022\007\n\003GBP\020\003\022\007\n\003CHF\020\0042\216\001\n\017ExchangeS" +
+      "ervice\022=\n\006getAll\022\024.currency.Currencies\032\033" +
+      ".currency.ExchangeContainer\"\000\022<\n\010exchang" +
+      "e\022\024.currency.Currencies\032\026.currency.Excha" +
+      "ngeRate\"\0000\001B&\n\rbank.gen.grpcB\rCurrencyPr" +
+      "otoP\001\242\002\003HLWb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -67,6 +75,12 @@ public final class CurrencyProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_currency_ExchangeRate_descriptor,
         new java.lang.String[] { "Currency", "Ratio", });
+    internal_static_currency_ExchangeContainer_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_currency_ExchangeContainer_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_currency_ExchangeContainer_descriptor,
+        new java.lang.String[] { "Rates", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -23,7 +23,7 @@ package bank.gen.ice.Bank;
 public class Money implements java.lang.Cloneable,
                               java.io.Serializable
 {
-    public long value;
+    public float value;
 
     public Currency currency;
 
@@ -32,7 +32,7 @@ public class Money implements java.lang.Cloneable,
         this.currency = Currency.PLN;
     }
 
-    public Money(long value, Currency currency)
+    public Money(float value, Currency currency)
     {
         this.value = value;
         this.currency = currency;
@@ -95,13 +95,13 @@ public class Money implements java.lang.Cloneable,
 
     public void ice_writeMembers(com.zeroc.Ice.OutputStream ostr)
     {
-        ostr.writeLong(this.value);
+        ostr.writeFloat(this.value);
         Currency.ice_write(ostr, this.currency);
     }
 
     public void ice_readMembers(com.zeroc.Ice.InputStream istr)
     {
-        this.value = istr.readLong();
+        this.value = istr.readFloat();
         this.currency = Currency.ice_read(istr);
     }
 

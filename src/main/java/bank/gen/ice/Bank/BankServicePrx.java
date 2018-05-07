@@ -22,32 +22,46 @@ package bank.gen.ice.Bank;
 
 public interface BankServicePrx extends com.zeroc.Ice.ObjectPrx
 {
-    default AccountPrx createAccount(Person person, Money declaredIncome)
+    default AccountPrx createAccount(Person person, Money declaredIncome, Money amount)
+        throws AccountCreationException
     {
-        return createAccount(person, declaredIncome, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        return createAccount(person, declaredIncome, amount, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default AccountPrx createAccount(Person person, Money declaredIncome, java.util.Map<String, String> context)
+    default AccountPrx createAccount(Person person, Money declaredIncome, Money amount, java.util.Map<String, String> context)
+        throws AccountCreationException
     {
-        return _iceI_createAccountAsync(person, declaredIncome, context, true).waitForResponse();
+        try
+        {
+            return _iceI_createAccountAsync(person, declaredIncome, amount, context, true).waitForResponseOrUserEx();
+        }
+        catch(AccountCreationException ex)
+        {
+            throw ex;
+        }
+        catch(com.zeroc.Ice.UserException ex)
+        {
+            throw new com.zeroc.Ice.UnknownUserException(ex.ice_id(), ex);
+        }
     }
 
-    default java.util.concurrent.CompletableFuture<AccountPrx> createAccountAsync(Person person, Money declaredIncome)
+    default java.util.concurrent.CompletableFuture<AccountPrx> createAccountAsync(Person person, Money declaredIncome, Money amount)
     {
-        return _iceI_createAccountAsync(person, declaredIncome, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+        return _iceI_createAccountAsync(person, declaredIncome, amount, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<AccountPrx> createAccountAsync(Person person, Money declaredIncome, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<AccountPrx> createAccountAsync(Person person, Money declaredIncome, Money amount, java.util.Map<String, String> context)
     {
-        return _iceI_createAccountAsync(person, declaredIncome, context, false);
+        return _iceI_createAccountAsync(person, declaredIncome, amount, context, false);
     }
 
-    default com.zeroc.IceInternal.OutgoingAsync<AccountPrx> _iceI_createAccountAsync(Person iceP_person, Money iceP_declaredIncome, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<AccountPrx> _iceI_createAccountAsync(Person iceP_person, Money iceP_declaredIncome, Money iceP_amount, java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<AccountPrx> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "createAccount", null, sync, null);
+        com.zeroc.IceInternal.OutgoingAsync<AccountPrx> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "createAccount", null, sync, _iceE_createAccount);
         f.invoke(true, context, null, ostr -> {
                      Person.ice_write(ostr, iceP_person);
                      Money.ice_write(ostr, iceP_declaredIncome);
+                     Money.ice_write(ostr, iceP_amount);
                  }, istr -> {
                      AccountPrx ret;
                      ret = AccountPrx.uncheckedCast(istr.readProxy());
@@ -56,31 +70,37 @@ public interface BankServicePrx extends com.zeroc.Ice.ObjectPrx
         return f;
     }
 
-    default AccountPrx getAccount(long accountId)
+    static final Class<?>[] _iceE_createAccount =
     {
-        return getAccount(accountId, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        AccountCreationException.class
+    };
+
+    default AccountPrx getAccount(String pesel, AccountCategory category)
+    {
+        return getAccount(pesel, category, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default AccountPrx getAccount(long accountId, java.util.Map<String, String> context)
+    default AccountPrx getAccount(String pesel, AccountCategory category, java.util.Map<String, String> context)
     {
-        return _iceI_getAccountAsync(accountId, context, true).waitForResponse();
+        return _iceI_getAccountAsync(pesel, category, context, true).waitForResponse();
     }
 
-    default java.util.concurrent.CompletableFuture<AccountPrx> getAccountAsync(long accountId)
+    default java.util.concurrent.CompletableFuture<AccountPrx> getAccountAsync(String pesel, AccountCategory category)
     {
-        return _iceI_getAccountAsync(accountId, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+        return _iceI_getAccountAsync(pesel, category, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<AccountPrx> getAccountAsync(long accountId, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<AccountPrx> getAccountAsync(String pesel, AccountCategory category, java.util.Map<String, String> context)
     {
-        return _iceI_getAccountAsync(accountId, context, false);
+        return _iceI_getAccountAsync(pesel, category, context, false);
     }
 
-    default com.zeroc.IceInternal.OutgoingAsync<AccountPrx> _iceI_getAccountAsync(long iceP_accountId, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<AccountPrx> _iceI_getAccountAsync(String iceP_pesel, AccountCategory iceP_category, java.util.Map<String, String> context, boolean sync)
     {
         com.zeroc.IceInternal.OutgoingAsync<AccountPrx> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getAccount", null, sync, null);
         f.invoke(true, context, null, ostr -> {
-                     ostr.writeLong(iceP_accountId);
+                     ostr.writeString(iceP_pesel);
+                     AccountCategory.ice_write(ostr, iceP_category);
                  }, istr -> {
                      AccountPrx ret;
                      ret = AccountPrx.uncheckedCast(istr.readProxy());

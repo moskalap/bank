@@ -17,7 +17,7 @@ public interface ExchangeRateOrBuilder extends
   bank.gen.grpc.Currency getCurrency();
 
   /**
-   * <code>float ratio = 2;</code>
+   * <code>double ratio = 2;</code>
    */
-  float getRatio();
+  double getRatio();
 }
