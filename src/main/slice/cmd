@@ -1,1 +1,2 @@
 slice2java --meta java:package:bank.gen.ice  --output-dir ../java/ bank.ice
+slice2py --output-dir ../python/ bank.ice
