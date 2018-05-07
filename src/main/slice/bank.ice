@@ -8,9 +8,10 @@ module Bank
     enum AccountCategory {STANDARD, PREMIUM}
 
     struct Money {
-        long value;
+        float value;
         Currency currency;
     }
+
     struct Date {
         byte day;
         byte month;
@@ -27,11 +28,11 @@ module Bank
         Money localCurrency;
         Money foreignCurrency;
     }
-    interface Account{
-        long getAccountId();
-        Money getMoneyAmount();
-        CreditInfo getLocalCurrencyCreditInfo(long amount, Date endOfContract);
 
+    interface Account{
+        string getAccountId();
+        Money getMoneyAmount();
+        CreditInfo getLocalCurrencyCreditInfo(float amount, Date endOfContract);
     }
 
     interface PremiumAccount extends Account{
@@ -39,12 +40,9 @@ module Bank
     }
 
     interface BankService{
-        Account* createAccount(Person person, Money declaredIncome);
-        Account* getAccount(long accountId);
+        Account* createAccount(Person person, Money declaredIncome, Money amount);
+        Account* getAccount(string accountId);
     }
-
-
-
 
 };
 

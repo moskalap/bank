@@ -21,9 +21,15 @@ message Currencies {
 
 message ExchangeRate{
     Currency currency = 1;
-    float ratio = 2;
+    double ratio = 2;
+}
+
+message ExchangeContainer{
+	repeated ExchangeRate rates = 1;
 }
 
 service ExchangeService{
-    rpc exchange(Currencies) returns (stream ExchangeRate){}
+    rpc getAll(Currencies) returns (ExchangeContainer) {}
+	rpc exchange(Currencies) returns (stream ExchangeRate) {}
+
 }
