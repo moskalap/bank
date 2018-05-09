@@ -48,6 +48,6 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public AccountPrx getAccount(String pesel, AccountCategory category, Current current) {
-        return AccountPrx.uncheckedCast((ObjectPrx) current.adapter.find(new Identity(pesel, category.name())));
+        return AccountPrx.uncheckedCast(current.adapter.createProxy(new Identity(pesel, category.name())));
     }
 }
