@@ -51,9 +51,9 @@ if 'Currency' not in _M_Bank.__dict__:
     _M_Bank.Currency = Currency
     del Currency
 
-if 'AccountStructureError' not in _M_Bank.__dict__:
-    _M_Bank.AccountStructureError = Ice.createTempClass()
-    class AccountStructureError(Ice.EnumBase):
+if 'AccountError' not in _M_Bank.__dict__:
+    _M_Bank.AccountError = Ice.createTempClass()
+    class AccountError(Ice.EnumBase):
 
         def __init__(self, _n, _v):
             Ice.EnumBase.__init__(self, _n, _v)
@@ -64,15 +64,16 @@ if 'AccountStructureError' not in _M_Bank.__dict__:
             return None
         valueOf = classmethod(valueOf)
 
-    AccountStructureError.AMOUNTNEGATIVE = AccountStructureError("AMOUNTNEGATIVE", 0)
-    AccountStructureError.PESELNOTNUMERIC = AccountStructureError("PESELNOTNUMERIC", 1)
-    AccountStructureError.PESELLENGTH = AccountStructureError("PESELLENGTH", 2)
-    AccountStructureError._enumerators = { 0:AccountStructureError.AMOUNTNEGATIVE, 1:AccountStructureError.PESELNOTNUMERIC, 2:AccountStructureError.PESELLENGTH }
+    AccountError.AMOUNTNEGATIVE = AccountError("AMOUNTNEGATIVE", 0)
+    AccountError.PESELNOTNUMERIC = AccountError("PESELNOTNUMERIC", 1)
+    AccountError.PESELLENGTH = AccountError("PESELLENGTH", 2)
+    AccountError.ACCNTDONTEXIST = AccountError("ACCNTDONTEXIST", 3)
+    AccountError._enumerators = { 0:AccountError.AMOUNTNEGATIVE, 1:AccountError.PESELNOTNUMERIC, 2:AccountError.PESELLENGTH, 3:AccountError.ACCNTDONTEXIST }
 
-    _M_Bank._t_AccountStructureError = IcePy.defineEnum('::Bank::AccountStructureError', AccountStructureError, (), AccountStructureError._enumerators)
+    _M_Bank._t_AccountError = IcePy.defineEnum('::Bank::AccountError', AccountError, (), AccountError._enumerators)
 
-    _M_Bank.AccountStructureError = AccountStructureError
-    del AccountStructureError
+    _M_Bank.AccountError = AccountError
+    del AccountError
 
 if 'CreditInfoError' not in _M_Bank.__dict__:
     _M_Bank.CreditInfoError = Ice.createTempClass()
@@ -248,9 +249,9 @@ if 'Date' not in _M_Bank.__dict__:
         __repr__ = __str__
 
     _M_Bank._t_Date = IcePy.defineStruct('::Bank::Date', Date, (), (
-        ('day', (), IcePy._t_byte),
-        ('month', (), IcePy._t_byte),
-        ('year', (), IcePy._t_short)
+        ('day', (), IcePy._t_short),
+        ('month', (), IcePy._t_short),
+        ('year', (), IcePy._t_int)
     ))
 
     _M_Bank.Date = Date
@@ -419,10 +420,10 @@ if 'BankException' not in _M_Bank.__dict__:
     _M_Bank.BankException = BankException
     del BankException
 
-if 'AccountCreationException' not in _M_Bank.__dict__:
-    _M_Bank.AccountCreationException = Ice.createTempClass()
-    class AccountCreationException(_M_Bank.BankException):
-        def __init__(self, msg='', errorType=_M_Bank.AccountStructureError.AMOUNTNEGATIVE):
+if 'AccountException' not in _M_Bank.__dict__:
+    _M_Bank.AccountException = Ice.createTempClass()
+    class AccountException(_M_Bank.BankException):
+        def __init__(self, msg='', errorType=_M_Bank.AccountError.AMOUNTNEGATIVE):
             _M_Bank.BankException.__init__(self, msg)
             self.errorType = errorType
 
@@ -431,13 +432,13 @@ if 'AccountCreationException' not in _M_Bank.__dict__:
 
         __repr__ = __str__
 
-        _ice_id = '::Bank::AccountCreationException'
+        _ice_id = '::Bank::AccountException'
 
-    _M_Bank._t_AccountCreationException = IcePy.defineException('::Bank::AccountCreationException', AccountCreationException, (), False, _M_Bank._t_BankException, (('errorType', (), _M_Bank._t_AccountStructureError, False, 0),))
-    AccountCreationException._ice_type = _M_Bank._t_AccountCreationException
+    _M_Bank._t_AccountException = IcePy.defineException('::Bank::AccountException', AccountException, (), False, _M_Bank._t_BankException, (('errorType', (), _M_Bank._t_AccountError, False, 0),))
+    AccountException._ice_type = _M_Bank._t_AccountException
 
-    _M_Bank.AccountCreationException = AccountCreationException
-    del AccountCreationException
+    _M_Bank.AccountException = AccountException
+    del AccountException
 
 if 'CreditInfoException' not in _M_Bank.__dict__:
     _M_Bank.CreditInfoException = Ice.createTempClass()
@@ -635,14 +636,14 @@ if 'BankServicePrx' not in _M_Bank.__dict__:
         def end_createAccount(self, _r):
             return _M_Bank.BankService._op_createAccount.end(self, _r)
 
-        def getAccount(self, pesel, category, context=None):
-            return _M_Bank.BankService._op_getAccount.invoke(self, ((pesel, category), context))
+        def getAccount(self, guid, context=None):
+            return _M_Bank.BankService._op_getAccount.invoke(self, ((guid, ), context))
 
-        def getAccountAsync(self, pesel, category, context=None):
-            return _M_Bank.BankService._op_getAccount.invokeAsync(self, ((pesel, category), context))
+        def getAccountAsync(self, guid, context=None):
+            return _M_Bank.BankService._op_getAccount.invokeAsync(self, ((guid, ), context))
 
-        def begin_getAccount(self, pesel, category, _response=None, _ex=None, _sent=None, context=None):
-            return _M_Bank.BankService._op_getAccount.begin(self, ((pesel, category), _response, _ex, _sent, context))
+        def begin_getAccount(self, guid, _response=None, _ex=None, _sent=None, context=None):
+            return _M_Bank.BankService._op_getAccount.begin(self, ((guid, ), _response, _ex, _sent, context))
 
         def end_getAccount(self, _r):
             return _M_Bank.BankService._op_getAccount.end(self, _r)
@@ -679,7 +680,7 @@ if 'BankServicePrx' not in _M_Bank.__dict__:
         def createAccount(self, person, declaredIncome, amount, current=None):
             raise NotImplementedError("servant method 'createAccount' not implemented")
 
-        def getAccount(self, pesel, category, current=None):
+        def getAccount(self, guid, current=None):
             raise NotImplementedError("servant method 'getAccount' not implemented")
 
         def __str__(self):
@@ -690,8 +691,8 @@ if 'BankServicePrx' not in _M_Bank.__dict__:
     _M_Bank._t_BankServiceDisp = IcePy.defineClass('::Bank::BankService', BankService, (), None, ())
     BankService._ice_type = _M_Bank._t_BankServiceDisp
 
-    BankService._op_createAccount = IcePy.Operation('createAccount', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (((), _M_Bank._t_Person, False, 0), ((), _M_Bank._t_Money, False, 0), ((), _M_Bank._t_Money, False, 0)), (), ((), _M_Bank._t_AccountPrx, False, 0), (_M_Bank._t_AccountCreationException,))
-    BankService._op_getAccount = IcePy.Operation('getAccount', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (((), IcePy._t_string, False, 0), ((), _M_Bank._t_AccountCategory, False, 0)), (), ((), _M_Bank._t_AccountPrx, False, 0), ())
+    BankService._op_createAccount = IcePy.Operation('createAccount', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (((), _M_Bank._t_Person, False, 0), ((), _M_Bank._t_Money, False, 0), ((), _M_Bank._t_Money, False, 0)), (), ((), _M_Bank._t_AccountPrx, False, 0), (_M_Bank._t_AccountException,))
+    BankService._op_getAccount = IcePy.Operation('getAccount', Ice.OperationMode.Normal, Ice.OperationMode.Normal, False, None, (), (((), IcePy._t_string, False, 0),), (), ((), _M_Bank._t_AccountPrx, False, 0), (_M_Bank._t_AccountException,))
 
     _M_Bank.BankService = BankService
     del BankService

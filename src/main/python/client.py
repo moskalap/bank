@@ -13,7 +13,7 @@ curr_map = {
 }
 if __name__ == '__main__':
     communicator = Ice.initialize(sys.argv)
-    base = communicator.stringToProxy('bank/bank1:tcp -h localhost -p 10001:udp -h localhost -p 10001')
+    base = communicator.stringToProxy('bank/bank1:tcp -h localhost -p 10002:udp -h localhost -p 10002')
     bankService = BankServicePrx.checkedCast(base)
     if not bankService:
         exit(-1)
@@ -29,7 +29,7 @@ if __name__ == '__main__':
                     print("create name surname pesel income amount")
                 else:
                     account = bankService.createAccount(Person(line[1], line[2], line[3]),Money(float(line[4]), Currency.PLN), Money(float(line[5]), Currency.PLN))
-
+                    print("created account" + account.getAccountId())
             if cmd == 'state':
                 print(account.getMoneyAmount().value)
 
@@ -56,12 +56,12 @@ if __name__ == '__main__':
                         print("not premium")
 
             if cmd == 'find':
-                if len(line) != 3:
-                    print('find pesel {S,P}')
+                if len(line) != 2:
+                    print('find id')
                 else:
-                    account = bankService.getAccount(line[1], {'S':AccountCategory.STANDARD, 'P':AccountCategory.PREMIUM}[line[2]])
+                    account = bankService.getAccount(line[1])
                     if account is not None:
-                        print('logged into account {}/{}'.format(line[2], line[1]))
+                        print('logged into account '+account.getAccountId())
 
         except Exception as e:
             print(e)

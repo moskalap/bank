@@ -33,6 +33,7 @@ public class Client {
                                     System.out.println("create name surname pesel income amount");
                                 } else {
                                     account = obj.createAccount(new Person(line[1], line[2], line[3]), new Money(Float.parseFloat(line[4]), Currency.PLN), new Money(Float.parseFloat(line[5]), Currency.PLN));
+                                    System.out.println("Creted account: id="+account.getAccountId());
                                 }
 
                                 break;
@@ -53,7 +54,7 @@ public class Client {
                                     System.out.println("Log to account or create new!");
                                     break;
                                 }
-                                date = new Date(Byte.parseByte(line[1]), Byte.parseByte(line[2]), Byte.parseByte(line[3]));
+                                date = new Date(Short.parseShort(line[1]), Short.parseShort(line[2]), Integer.parseInt(line[3]));
                                 CreditInfo info = account.getLocalCurrencyCreditInfo(Float.parseFloat(line[4]), date);
                                 System.out.println(String.format("Total cost for credit(%s, %s/%s/%s) is %s %s", line[4], date.day, date.month, date.year, info.localCurrency.value, info.localCurrency.currency.name()));
 
@@ -73,7 +74,7 @@ public class Client {
                                     break;
                                 }
 
-                                date = new Date(Byte.parseByte(line[1]), Byte.parseByte(line[2]), Byte.parseByte(line[3]));
+                                date = new Date(Short.parseShort(line[1]), Short.parseShort(line[2]), Integer.parseInt(line[3]));
                                 CreditInfo infoTotal = ((PremiumAccountPrx) account).getForeignCurrencyCreditInfo(new Money(Float.parseFloat(line[4]), Currency.valueOf(line[5])), date);
                                 System.out.println(String.format("Total cost for credit(%s %s, %s/%s/%s) is " +
                                                 "\n local: %s %s" +
@@ -84,17 +85,19 @@ public class Client {
 
                                 break;
                             case "find":
-                                if (line.length != 3) {
-                                    System.out.println("find pesel category");
+                                if (line.length != 2) {
+                                    System.out.println("find id");
                                     break;
                                 }
+                                account = obj.getAccount(line[1]);
+                                System.out.println("Logged into account: id="+account.getAccountId());
                                 break;
                         }
                     }
 
 
                 } catch (Exception e) {
-                    System.err.println(e.toString());
+                    e.printStackTrace();
                 }
             }
             while (!line[0].equals("x"));

@@ -3,7 +3,7 @@
 # "Hello". The following line sets the endpoints for this
 # adapter.
 #
-Bank1.Proxy=bank/bank1:tcp -h localhost -p 10001:udp -h localhost -p 10001
+Bank1.Proxy=bank/bank1:tcp -h localhost -p 10002:udp -h localhost -p 10002
 
 #
 # Warn about connection exceptions

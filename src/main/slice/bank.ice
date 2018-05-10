@@ -5,8 +5,8 @@ module Bank
 {
 
     enum Currency {PLN, USD, EUR, GBP, CHF};
-    enum AccountStructureError {AMOUNTNEGATIVE, PESELNOTNUMERIC, PESELLENGTH};
-    enum CreditInfoError { AMOUNTNEGATIVE, DATEPAST};
+    enum AccountError {AMOUNTNEGATIVE, PESELNOTNUMERIC, PESELLENGTH, ACCNTDONTEXIST};
+    enum CreditInfoError {AMOUNTNEGATIVE, DATEPAST};
     enum AccountCategory {STANDARD, PREMIUM};
 
     struct Money {
@@ -15,9 +15,9 @@ module Bank
     }
 
     struct Date {
-        byte day;
-        byte month;
-        short year;
+        short day;
+        short month;
+        int year;
     }
 
     struct Person {
@@ -34,9 +34,10 @@ module Bank
         string msg;
     }
 
-    exception AccountCreationException extends BankException {
-        AccountStructureError errorType;
+    exception AccountException extends BankException {
+        AccountError errorType;
     }
+
 
     exception CreditInfoException extends BankException{
         CreditInfoError error;
@@ -53,8 +54,8 @@ module Bank
     }
 
     interface BankService{
-        Account* createAccount(Person person, Money declaredIncome, Money amount) throws AccountCreationException;
-        Account* getAccount(string pesel, AccountCategory category);
+        Account* createAccount(Person person, Money declaredIncome, Money amount) throws AccountException;
+        Account* getAccount(string guid) throws AccountException;
     }
 
 };

@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 public class BankServiceImpl implements BankService {
     private static final Logger logger = Logger.getLogger(BankServiceImpl.class.getName());
     public static long ids = 0;
+    private  final ConcurrentHashMap<String, Identity> accountMap = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<Currency, Double> currencyExchange;
 
     public BankServiceImpl(ConcurrentHashMap<Currency, Double> currencyExchange) {
@@ -21,33 +22,41 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public AccountPrx createAccount(Person person, Money declaredIncome, Money amount, Current current) throws AccountCreationException {
+    public AccountPrx createAccount(Person person, Money declaredIncome, Money amount, Current current) throws AccountException {
         validate(person, declaredIncome, amount);
 
         if(declaredIncome.value > 100000){
-            ObjectPrx account = current.adapter.add(new PremiumAccountImpl(person.pesel, currencyExchange, amount), new Identity(person.pesel, AccountCategory.PREMIUM.name()));
+            Identity id = new Identity(person.pesel, AccountCategory.PREMIUM.name());
+            String accountId = new String(person.surname).concat(String.valueOf(ids++));
+            accountMap.put(accountId, id);
+            ObjectPrx account = current.adapter.add(new PremiumAccountImpl(accountId, person, currencyExchange, amount), id);
             logger.info(String.format("Created an premium account for user {%s,%s,%s} with declared income = %s and money amount = %s", person.name, person.surname, person.pesel, declaredIncome, amount));
             return PremiumAccountPrx.checkedCast(account);
         }else{
-            ObjectPrx account = current.adapter.add(new AccountImpl(person.pesel, amount), new Identity(person.pesel, AccountCategory.STANDARD.name()));
+            Identity id = new Identity(person.pesel, AccountCategory.STANDARD.name());
+            String accountId = new String(person.surname).concat(String.valueOf(ids++));
+            accountMap.put(accountId, id);
+            ObjectPrx account = current.adapter.add(new AccountImpl(accountId, person, amount),id );
             logger.info(String.format("Created an standard account for user {%s,%s,%s} with declared income = %s and money amount = %s", person.name, person.surname, person.pesel, declaredIncome, amount));
             return AccountPrx.checkedCast(account);
         }
     }
 
-    private void validate(Person person, Money income, Money amount) throws AccountCreationException{
+    private void validate(Person person, Money income, Money amount) throws AccountException{
         if(person.pesel.length() != 11)
-            throw new AccountCreationException("Pesel length should be 11", AccountStructureError.PESELLENGTH);
+            throw new AccountException("Pesel length should be 11", AccountError.PESELLENGTH);
         for (char c : person.pesel.toCharArray()) {
-            if (!Character.isDigit(c)) throw new AccountCreationException("Pesel should be numeric", AccountStructureError.PESELNOTNUMERIC);
+            if (!Character.isDigit(c)) throw new AccountException("Pesel should be numeric", AccountError.PESELNOTNUMERIC);
         }
         if(income.value < 0.0f || amount.value < 0.0f )
-            throw new AccountCreationException("Income/amount should be non negative", AccountStructureError.AMOUNTNEGATIVE);
+            throw new AccountException("Income/amount should be non negative", AccountError.AMOUNTNEGATIVE);
 
     }
 
     @Override
-    public AccountPrx getAccount(String pesel, AccountCategory category, Current current) {
-        return AccountPrx.uncheckedCast(current.adapter.createProxy(new Identity(pesel, category.name())));
+    public AccountPrx getAccount(String id, Current current) throws AccountException {
+        if(accountMap.containsKey(id))
+            return AccountPrx.uncheckedCast(current.adapter.createProxy(accountMap.get(id)));
+        else throw new AccountException("Account dont exist", AccountError.ACCNTDONTEXIST);
     }
 }

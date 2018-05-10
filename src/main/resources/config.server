@@ -3,7 +3,7 @@
 # "Hello". The following line sets the endpoints for this
 # adapter.
 #
-Adapter1.Endpoints=tcp -h localhost -p 10001:udp -h localhost -p 10001
+Adapter1.Endpoints=tcp -h localhost -p 10002:udp -h localhost -p 10002
 
 #
 # Warn about connection exceptions
