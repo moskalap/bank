@@ -11,10 +11,10 @@ public class Server {
     }
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
-    private int port = 50051;
+
     private io.grpc.Server server;
 
-    private void start() throws IOException
+    private void start(int port) throws IOException
     {
         server = ServerBuilder
                 .forPort(port)
@@ -53,8 +53,14 @@ public class Server {
      * Main launches the server from the command line.
      */
     public static void main(String[] args) throws IOException, InterruptedException {
-        final Server server = new Server();
-        server.start();
-        server.blockUntilShutdown();
+        if(args.length != 1){
+            System.out.print("server port");
+        }else{
+            int port = Integer.valueOf(args[0]);
+            final Server server = new Server();
+            server.start(port);
+            server.blockUntilShutdown();
+        }
+
     }
 }
